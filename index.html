@@ -30,6 +30,8 @@
         gn.init().then(function(){
         gn.start(function(data){
 
+            $('#debug').html('');
+
             $('#alpha').html(data.do.alpha);
             $('#beta').html(data.do.beta);
             $('#gamma').html(data.do.gamma);
