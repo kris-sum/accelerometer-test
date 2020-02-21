@@ -25,6 +25,8 @@
     <script>
         var gn = new GyroNorm();
 
+        var angle = 10;
+
         gn.init().then(function(){
         gn.start(function(data){
 
@@ -32,7 +34,11 @@
             $('#beta').html(data.do.beta);
             $('#gamma').html(data.do.gamma);
 
-            if (data.do.beta < 5 && data.do.beta > -5) {
+            
+
+            if (data.do.beta < angle && data.do.beta > (angle * -1) &&
+            ata.do.gamma < angle && data.do.gamma > (angle * -1)
+            ) {
                 $('#notflat').hide();
                 $('#flat').show();
             } else { 
