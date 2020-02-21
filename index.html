@@ -27,48 +27,66 @@
 
         var angle = 10;
 
-        gn.init().then(function(){
-        gn.start(function(data){
+        if (typeof DeviceMotionEvent.requestPermission === 'function') {
+        // iOS 13+
 
-            $('#debug').html('');
+            DeviceMotionEvent.requestPermission()
+                .then(response => {
+                if (response == 'granted') {
+                    start();
+                }
+                })
+                .catch(console.error)
 
-            $('#alpha').html(data.do.alpha);
-            $('#beta').html(data.do.beta);
-            $('#gamma').html(data.do.gamma);
+        } else {
+            start();
+        }
 
-            
+        function start() {
 
-            if (data.do.beta < angle && data.do.beta > (angle * -1) &&
-            data.do.gamma < angle && data.do.gamma > (angle * -1)
-            ) {
-                $('#notflat').hide();
-                $('#flat').show();
-            } else { 
-                $('#notflat').show();
-                $('#flat').hide();
-            }
-            // Process:
-            // data.do.alpha	( deviceorientation event alpha value )
-            // data.do.beta		( deviceorientation event beta value )
-            // data.do.gamma	( deviceorientation event gamma value )
-            // data.do.absolute	( deviceorientation event absolute value )
+            gn.init().then(function(){
+            gn.start(function(data){
 
-            // data.dm.x		( devicemotion event acceleration x value )
-            // data.dm.y		( devicemotion event acceleration y value )
-            // data.dm.z		( devicemotion event acceleration z value )
+                $('#debug').html('');
 
-            // data.dm.gx		( devicemotion event accelerationIncludingGravity x value )
-            // data.dm.gy		( devicemotion event accelerationIncludingGravity y value )
-            // data.dm.gz		( devicemotion event accelerationIncludingGravity z value )
+                $('#alpha').html(data.do.alpha);
+                $('#beta').html(data.do.beta);
+                $('#gamma').html(data.do.gamma);
 
-            // data.dm.alpha	( devicemotion event rotationRate alpha value )
-            // data.dm.beta		( devicemotion event rotationRate beta value )
-            // data.dm.gamma	( devicemotion event rotationRate gamma value )
-        });
-        }).catch(function(e){
-        // Catch if the DeviceOrientation or DeviceMotion is not supported by the browser or device
-            $('#debug').html('<div class="alert alert-warning">Device does not support orientation</div>');
-        });
+                
+
+                if (data.do.beta < angle && data.do.beta > (angle * -1) &&
+                data.do.gamma < angle && data.do.gamma > (angle * -1)
+                ) {
+                    $('#notflat').hide();
+                    $('#flat').show();
+                } else { 
+                    $('#notflat').show();
+                    $('#flat').hide();
+                }
+                // Process:
+                // data.do.alpha	( deviceorientation event alpha value )
+                // data.do.beta		( deviceorientation event beta value )
+                // data.do.gamma	( deviceorientation event gamma value )
+                // data.do.absolute	( deviceorientation event absolute value )
+
+                // data.dm.x		( devicemotion event acceleration x value )
+                // data.dm.y		( devicemotion event acceleration y value )
+                // data.dm.z		( devicemotion event acceleration z value )
+
+                // data.dm.gx		( devicemotion event accelerationIncludingGravity x value )
+                // data.dm.gy		( devicemotion event accelerationIncludingGravity y value )
+                // data.dm.gz		( devicemotion event accelerationIncludingGravity z value )
+
+                // data.dm.alpha	( devicemotion event rotationRate alpha value )
+                // data.dm.beta		( devicemotion event rotationRate beta value )
+                // data.dm.gamma	( devicemotion event rotationRate gamma value )
+            });
+            }).catch(function(e){
+            // Catch if the DeviceOrientation or DeviceMotion is not supported by the browser or device
+                $('#debug').html('<div class="alert alert-warning">Device does not support orientation</div>');
+            });
+        }
     </script>
     </body>
 </html>
